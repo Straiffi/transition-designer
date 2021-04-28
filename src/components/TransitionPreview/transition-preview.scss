@@ -1,0 +1,73 @@
+.transition-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.transition-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+    cursor: default;
+    padding: var(--size-m);
+    width: 15rem;
+
+    &.background-color {
+        background-color: lightgreen;
+
+        &:hover {
+            background-color: lightsalmon;
+        }
+    }
+
+    &.border {
+        border: 1px solid black;
+
+        &:hover {
+            border: 3px solid red;
+        }
+    }
+
+    &.border-radius {
+        border: 1px solid black;
+
+        &:hover {
+            border-radius: var(--border-radius-large);
+        }
+    }
+
+    &.box-shadow {
+        box-shadow: 0 10px 13px -7px #000000;
+
+        &:hover {
+            box-shadow: 5px 5px 13px 5px #000000;
+        }
+    }
+}
+
+.code-preview {
+    display: flex;
+    align-items: center;
+    margin-top: var(--size-2-xl);
+    margin-bottom: var(--size-s);
+
+    code {
+        max-width: 40vw;
+        white-space: nowrap;
+        overflow-y: auto;
+    }
+
+    input {
+        // this needs to be visible in order for the copying to work
+        position: absolute;
+        left: -100000000px;
+    }
+
+    .button {
+        height: var(--size-xl);
+        width: var(--size-xl);
+        margin-left: var(--size-s);
+    }
+}

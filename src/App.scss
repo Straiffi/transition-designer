@@ -1,0 +1,31 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-container {
+  width: 85vw;
+  max-width: 90rem;
+  height: 50vh;
+  min-height: 20rem;
+  margin-top: var(--size-2-xl);
+  padding: 5rem 2rem;
+  box-shadow: 5px 5px 32px 3px var(--color-grey);
+}
+
+.content {
+  display: flex;
+  height: 100%;
+}
+
+.selectors {
+  margin-right: var(--size-2-xl);
+  padding-right: var(--size-2-xl);
+  border-right: 1px solid var(--color-grey);
+
+  .property-selector {
+    margin-bottom: var(--size-xl);
+  }
+}

@@ -1,0 +1,41 @@
+.property-selector {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 14rem;
+
+  button {
+    background-color: white;
+    border: 1px solid black;
+    padding: var(--size-s) var(--size-xl);
+    border-radius: var(--border-radius-large);
+
+    span {
+      display: inline-block;
+    }
+
+    svg {
+      margin-left: auto;
+    }
+  }
+}
+
+.property-list {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 14rem;
+  overflow: hidden;
+  background-color: white;
+  position: absolute;
+  top: var(--size-m);
+  padding: var(--size-m);
+  border: 1px solid black;
+  border-top: none;
+  z-index: var(--z-index-top);
+  list-style: none;
+
+  li {
+    cursor: pointer;
+  }
+}
