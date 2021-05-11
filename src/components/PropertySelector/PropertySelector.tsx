@@ -1,7 +1,12 @@
 import {AnimatePresence, motion} from 'framer-motion'
 import {useCallback, useRef, useState} from 'react'
 import './property-selector.scss'
-import {contentItem, selectorVariants} from '../../animation'
+import {
+  buttonHover,
+  contentItem,
+  selectorVariants,
+  toggleDropdown
+} from '../../animation'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons'
 import {useClickOutside} from '../../hooks'
@@ -9,16 +14,19 @@ import {useClickOutside} from '../../hooks'
 type PropertySelectorProps = {
   properties: string[]
   text: string
+  selectedProperty: string
   setSelectedProperty: (property: string) => void
 }
 
 const PropertySelector = ({
   properties,
   text,
+  selectedProperty,
   setSelectedProperty
 }: PropertySelectorProps): JSX.Element => {
   const selectorRef = useRef<HTMLDivElement>(null)
   const [listVisible, setListVisible] = useState(false)
+  const [toggleable, setToggleable] = useState(true)
 
   useClickOutside({ref: selectorRef, callback: () => setListVisible(false)})
 
@@ -30,13 +38,25 @@ const PropertySelector = ({
     [setSelectedProperty]
   )
 
+  const toggleList = useCallback(() => {
+    if (!toggleable) {
+      return
+    }
+
+    setListVisible(!listVisible)
+    setToggleable(false)
+  }, [listVisible, toggleable])
+
+  const onAnimationComplete = useCallback(() => setToggleable(true), [])
+
   const propertyList = listVisible && (
     <motion.ul
-      initial={{height: 0, opacity: 0}}
-      animate={{height: 'auto', opacity: 1}}
-      exit={{height: 0, opacity: 0}}
+      variants={toggleDropdown}
+      initial="hidden"
+      exit="exit"
       key="property-list"
       className="property-list"
+      onAnimationComplete={onAnimationComplete}
     >
       {properties.map(property => (
         <li onClick={() => selectProperty(property)} key={property}>
@@ -52,14 +72,16 @@ const PropertySelector = ({
       variants={contentItem}
       ref={selectorRef}
     >
+      <span className="property-selector-name">{text}</span>
       <motion.button
         className="button"
-        onClick={() => setListVisible(!listVisible)}
+        onClick={toggleList}
         initial={listVisible ? 'open' : 'closed'}
         animate={listVisible ? 'open' : 'closed'}
+        whileHover={buttonHover}
         variants={selectorVariants}
       >
-        <span>{text}</span>
+        <span>{selectedProperty}</span>
         <FontAwesomeIcon icon={faCaretDown} size="sm" />
       </motion.button>
 

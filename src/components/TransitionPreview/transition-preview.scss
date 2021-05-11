@@ -7,53 +7,117 @@
 
 .transition-preview {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    background-color: var(--background-color);
     cursor: default;
     padding: var(--size-m);
     width: 15rem;
+    height: var(--size-m);
+    background-color: var(--color-nitor-blue);
+    color: var(--color-white);
+    box-sizing: content-box;
 
     &.background-color {
-        background-color: lightgreen;
-
         &:hover {
-            background-color: lightsalmon;
+            background-color: var(--color-light-blue);
+        }
+    }
+
+    &.color {
+        &:hover {
+            color: var(--color-black);
         }
     }
 
     &.border {
-        border: 1px solid black;
+        border: 1px solid var(--color-black);
 
         &:hover {
-            border: 3px solid red;
+            border: 4px solid var(--color-pink);
         }
     }
 
     &.border-radius {
-        border: 1px solid black;
+        border: 1px solid var(--color-black);
 
         &:hover {
             border-radius: var(--border-radius-large);
         }
     }
 
+    &.width {
+        &:hover {
+            width: 18rem;
+        }
+    }
+
+    &.height {
+        &:hover {
+            height: 4rem;
+        }
+    }
+
+    &.opacity {
+        &:hover {
+            opacity: 0.3 !important;
+        }
+    }
+
+    &.font-size {
+        &:hover {
+            font-size: calc(var(--font-size-small) * 1.6);
+        }
+    }
+
+    &.font-weight {
+        &:hover {
+            font-weight: bold;
+        }
+    }
+
+    &.margin {
+        &:hover {
+            margin: var(--size-s);
+        }
+    }
+
+    &.padding {
+        &:hover {
+            padding: var(--size-l);
+        }
+    }
+
     &.box-shadow {
-        box-shadow: 0 10px 13px -7px #000000;
+        box-shadow: 0 12px 20px 0 var(--color-grey);
 
         &:hover {
-            box-shadow: 5px 5px 13px 5px #000000;
+            box-shadow: 5px 5px 13px 5px var(--color-nitor-blue);
+        }
+    }
+
+    &.text-shadow {
+        text-shadow: -1px -1px 1px var(--color-black), 1px 1px 1px var(--color-black);
+
+        &:hover {
+            text-shadow: 1px 3px 0 var(--color-black), 1px 10px 5px var(--color-black);
+        }
+    }
+
+    &.filter {
+        &:hover {
+            filter: blur(2px) grayscale(60%);
         }
     }
 }
 
 .code-preview {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-top: var(--size-2-xl);
     margin-bottom: var(--size-s);
 
     code {
+        width: 30rem;
         max-width: 40vw;
         white-space: nowrap;
         overflow-y: auto;

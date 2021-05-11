@@ -3,13 +3,13 @@ import {fadeInOut} from '../../animation'
 
 type FadeInOutProps = {
   className?: string
-  key: string
+  animationKey: string
   visible: boolean
   children: JSX.Element
 }
 
 const FadeInOut = ({
-  key,
+  animationKey,
   visible,
   children,
   className
@@ -19,7 +19,7 @@ const FadeInOut = ({
       {visible && (
         <motion.div
           variants={fadeInOut}
-          key={key}
+          key={animationKey}
           className={className}
           initial="hidden"
           exit="exit"

@@ -1,26 +1,24 @@
 import {useCallback, useRef, useState} from 'react'
-import {AnimatePresence, motion} from 'framer-motion'
+import {motion} from 'framer-motion'
 import './transition-preview.scss'
-import {contentItem} from '../../animation'
+import {buttonHover, contentItem} from '../../animation'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCopy} from '@fortawesome/free-solid-svg-icons'
 import FadeInOut from '../Animation/FadeInOut'
 
 type TransitionPreviewProps = {
-  transitionProperty: string
-  transitionDuration: string
-  transitionTimingFunction?: string
-  transitionDelay?: string
+  transitionProperties: string[]
+  transitions: string[]
 }
 
 const TransitionPreview = ({
-  transitionProperty,
-  transitionDuration,
-  transitionTimingFunction = 'linear',
-  transitionDelay = '0ms'
+  transitionProperties,
+  transitions
 }: TransitionPreviewProps): JSX.Element => {
   const codePreviewRef = useRef<HTMLInputElement>(null)
   const [copyNoticeVisible, setCopyNoticeVisible] = useState(false)
+
+  const transitionStyle = transitions.join(', ')
 
   const copyToClipboard = useCallback(() => {
     if (!codePreviewRef.current) {
@@ -35,18 +33,13 @@ const TransitionPreview = ({
     setTimeout(() => setCopyNoticeVisible(false), 3000)
   }, [])
 
-  const transitionDelayLabel =
-    transitionDelay !== '0ms' ? ` ${transitionDelay}` : ''
-
-  const transitionStyle = `${transitionProperty} ${transitionDuration} ${transitionTimingFunction}${transitionDelayLabel}`
-
   return (
     <div className="transition-preview-container">
       <motion.div
         style={{
           transition: transitionStyle
         }}
-        className={`transition-preview ${transitionProperty}`}
+        className={`transition-preview ${transitionProperties.join(' ')}`}
         variants={contentItem}
       >
         Hover me
@@ -60,16 +53,17 @@ const TransitionPreview = ({
           readOnly
         />
 
-        <button
+        <motion.button
           className="button"
           onClick={copyToClipboard}
           title="copy to clipboard"
+          whileHover={buttonHover}
         >
           <FontAwesomeIcon icon={faCopy} size="lg" />
-        </button>
+        </motion.button>
       </motion.div>
 
-      <FadeInOut visible={copyNoticeVisible} key="copy-notice">
+      <FadeInOut visible={copyNoticeVisible} animationKey="copy-notice">
         <span>code copied to clipboard</span>
       </FadeInOut>
     </div>

@@ -3,16 +3,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: calc(var(--size-2-xl) * 2);
 }
 
 .content-container {
   width: 85vw;
   max-width: 90rem;
-  height: 50vh;
   min-height: 20rem;
-  margin-top: var(--size-2-xl);
+  margin-top: var(--size-l);
   padding: 5rem 2rem;
   box-shadow: 5px 5px 32px 3px var(--color-grey);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-large);
 }
 
 .content {

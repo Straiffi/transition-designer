@@ -4,14 +4,14 @@ export const contentVariants = {
     opacity: 1,
     scale: 1,
     transition: {
-      delayChildren: 0.2,
-      staggerChildren: 0.2
+      delayChildren: 0.3,
+      staggerChildren: 0.1
     }
   }
 }
 
 export const contentItem = {
-  hidden: {x: -70, opacity: 0},
+  hidden: {x: -50, opacity: 0},
   visible: {
     x: 0,
     opacity: 1
@@ -27,7 +27,8 @@ export const selectorVariants = {
   },
   open: {
     borderRadius: 0,
-    borderBottom: 'none'
+    backgroundColor: 'var(--color-nitor-blue)',
+    color: 'var(--color-white)'
   }
 }
 
@@ -35,4 +36,15 @@ export const fadeInOut = {
   hidden: {opacity: 0, scale: 0.5},
   visible: {opacity: 1, scale: 1},
   exit: {opacity: 0, scale: 0}
+}
+
+export const toggleDropdown = {
+  hidden: {height: 0, opacity: 0},
+  visible: {height: 'auto', opacity: 1},
+  exit: {height: 0, opacity: 0}
+}
+
+export const buttonHover = {
+  backgroundColor: 'var(--color-nitor-blue)',
+  color: 'var(--color-white)'
 }
