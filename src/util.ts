@@ -1,4 +1,5 @@
 import round from 'lodash/round'
+import {Transition} from './types'
 
 export const formatMilliseconds = (ms: number): string => {
   if (ms < 1000) {
@@ -8,22 +9,13 @@ export const formatMilliseconds = (ms: number): string => {
   return `${round(ms * 0.001, 1)}s`
 }
 
-export const createTransitionStyleString = ({
-  transitionProperty,
-  transitionDuration,
-  transitionTimingFunction,
-  transitionDelay
-}: {
-  transitionProperty: string
-  transitionDuration: string
-  transitionTimingFunction: string
-  transitionDelay?: string
-}): string => {
+export const createTransitionStyleString = (transition: Transition): string => {
+  const {property, timingFunction, duration, delay = 0} = transition
+
   const transitionDelayLabel =
-    transitionDelay !== '0ms' ? ` ${transitionDelay}` : ''
+    delay !== 0 ? ` ${formatMilliseconds(delay)}` : ''
 
-  return `${transitionProperty} ${transitionDuration} ${transitionTimingFunction}${transitionDelayLabel}`
+  return `${property} ${formatMilliseconds(
+    duration
+  )} ${timingFunction}${transitionDelayLabel}`
 }
-
-export const getPropertiesFromStyleString = (transitionStyles: string[]) =>
-  transitionStyles.map(style => style.split(' ')[0])

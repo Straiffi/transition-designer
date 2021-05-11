@@ -5,10 +5,12 @@ import {buttonHover, contentItem} from '../../animation'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCopy} from '@fortawesome/free-solid-svg-icons'
 import FadeInOut from '../Animation/FadeInOut'
+import {Transition} from '../../types'
+import {createTransitionStyleString} from '../../util'
 
 type TransitionPreviewProps = {
   transitionProperties: string[]
-  transitions: string[]
+  transitions: Transition[]
 }
 
 const TransitionPreview = ({
@@ -18,7 +20,9 @@ const TransitionPreview = ({
   const codePreviewRef = useRef<HTMLInputElement>(null)
   const [copyNoticeVisible, setCopyNoticeVisible] = useState(false)
 
-  const transitionStyle = transitions.join(', ')
+  const transitionStyle = transitions
+    .map(transition => createTransitionStyleString(transition))
+    .join(', ')
 
   const copyToClipboard = useCallback(() => {
     if (!codePreviewRef.current) {

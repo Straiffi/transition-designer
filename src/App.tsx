@@ -5,13 +5,9 @@ import PropertySelector from './components/PropertySelector/PropertySelector'
 import {contentItem, contentVariants} from './animation'
 import {useCallback, useEffect, useState} from 'react'
 import ValueSlider from './components/ValueSlider/ValueSlider'
-import {
-  createTransitionStyleString,
-  formatMilliseconds,
-  getPropertiesFromStyleString
-} from './util'
 import Footer from './components/Footer/Footer'
 import {timingFunctions, transitionProperties} from './data'
+import {Transition} from './types'
 
 const defaultState = {
   property: 'background-color',
@@ -32,18 +28,18 @@ const App = () => {
   )
   const [selectedDelay, setSelectedDelay] = useState(defaultState.delay)
 
-  const [transitions, setTransitions] = useState<string[]>([])
+  const [transitions, setTransitions] = useState<Transition[]>([])
   const [selectedTransitionIndex, setSelectedTransitionIndex] = useState(0)
 
   useEffect(() => {
     setTransitions(currentState => {
       const newArray = [...currentState]
-      newArray[selectedTransitionIndex] = createTransitionStyleString({
-        transitionProperty: selectedProperty,
-        transitionDuration: formatMilliseconds(selectedDuration),
-        transitionTimingFunction: selectedTimingFunction,
-        transitionDelay: formatMilliseconds(selectedDelay)
-      })
+      newArray[selectedTransitionIndex] = {
+        property: selectedProperty,
+        duration: selectedDuration,
+        timingFunction: selectedTimingFunction,
+        delay: selectedDelay
+      }
       return newArray
     })
   }, [
@@ -54,7 +50,7 @@ const App = () => {
     selectedTransitionIndex
   ])
 
-  const selectedProperties = getPropertiesFromStyleString(transitions)
+  const selectedProperties = transitions.map(({property}) => property)
   const filteredProperties = transitionProperties.filter(
     property => !selectedProperties.includes(property)
   )
