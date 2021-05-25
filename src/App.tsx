@@ -2,63 +2,74 @@ import {motion} from 'framer-motion'
 import './App.scss'
 import TransitionPreview from './components/TransitionPreview/TransitionPreview'
 import PropertySelector from './components/PropertySelector/PropertySelector'
-import {contentItem, contentVariants} from './animation'
-import {useCallback, useEffect, useState} from 'react'
+import {contentVariants} from './animation'
+import {useCallback} from 'react'
 import ValueSlider from './components/ValueSlider/ValueSlider'
 import Footer from './components/Footer/Footer'
 import {timingFunctions, transitionProperties} from './data'
 import {Transition} from './types'
+import TransitionsList from './components/TransitionsList/TransitionsList'
+import uniqueId from 'lodash/uniqueId'
+import {useTransitionsList, useUnload} from './hooks'
+import AddNewTransitionButton from './components/AddNewTransitionButton/AddNewTransitionButton'
+import BezierEditor from './components/BezierEditor/BezierEditor'
 
-const defaultState = {
-  property: 'background-color',
-  timingFunction: 'linear',
+const defaultTransition: Transition = {
+  property: transitionProperties[0],
+  timingFunction: timingFunctions[0],
   duration: 300,
-  delay: 0
+  delay: 0,
+  id: uniqueId()
 }
 
 const App = () => {
-  const [selectedProperty, setSelectedProperty] = useState(
-    defaultState.property
-  )
-  const [selectedTimingFunction, setSelectedTimingFunction] = useState(
-    defaultState.timingFunction
-  )
-  const [selectedDuration, setSelectedDuration] = useState(
-    defaultState.duration
-  )
-  const [selectedDelay, setSelectedDelay] = useState(defaultState.delay)
+  const {
+    transitions,
+    selectedTransition,
+    setTransitions,
+    setSelectedTransition,
+    setSelectedProperty,
+    setSelectedTimingFunction,
+    setSelectedDuration,
+    setSelectedDelay
+  } = useTransitionsList(defaultTransition)
 
-  const [transitions, setTransitions] = useState<Transition[]>([])
-  const [selectedTransitionIndex, setSelectedTransitionIndex] = useState(0)
-
-  useEffect(() => {
-    setTransitions(currentState => {
-      const newArray = [...currentState]
-      newArray[selectedTransitionIndex] = {
-        property: selectedProperty,
-        duration: selectedDuration,
-        timingFunction: selectedTimingFunction,
-        delay: selectedDelay
-      }
-      return newArray
-    })
-  }, [
-    selectedDelay,
-    selectedDuration,
-    selectedProperty,
-    selectedTimingFunction,
-    selectedTransitionIndex
-  ])
-
-  const selectedProperties = transitions.map(({property}) => property)
+  /*useUnload(e => {
+    e.preventDefault()
+  })
+*/
+  const selectedProperties = transitions.map(({property}) => property.name)
   const filteredProperties = transitionProperties.filter(
-    property => !selectedProperties.includes(property)
+    property => !selectedProperties.includes(property.name)
   )
 
   const addNewTransition = useCallback(() => {
-    setSelectedTransitionIndex(selectedTransitionIndex + 1)
     setSelectedProperty(filteredProperties[0])
-  }, [filteredProperties, selectedTransitionIndex])
+    const newTransition: Transition = {
+      property: filteredProperties[0],
+      duration: defaultTransition.duration,
+      timingFunction: defaultTransition.timingFunction,
+      delay: defaultTransition.delay,
+      id: uniqueId()
+    }
+
+    setTransitions(currentState => [...currentState, newTransition])
+    setSelectedTransition(newTransition)
+  }, [
+    filteredProperties,
+    setSelectedProperty,
+    setSelectedTransition,
+    setTransitions
+  ])
+
+  const deleteTransition = useCallback(
+    transition => {
+      setTransitions(currentState =>
+        currentState.filter(({id}) => id !== transition.id)
+      )
+    },
+    [setTransitions]
+  )
 
   return (
     <div className="app">
@@ -70,58 +81,76 @@ const App = () => {
         Transition Designer
       </motion.h1>
 
-      <div className="content-container">
-        <motion.div
-          className="content"
-          variants={contentVariants}
-          initial="hidden"
-          animate="visible"
-        >
+      <span className="mobile-error-message">
+        I'm sorry my dude, but the app really won't work on a screen this small
+      </span>
+
+      <div className="main">
+        <TransitionsList
+          transitions={transitions}
+          selectedTransition={selectedTransition}
+          setSelectedTransition={setSelectedTransition}
+          deleteTransition={deleteTransition}
+        />
+        <div className="content-container">
           <motion.div
-            className="selectors"
-            initial={{opacity: 0}}
-            animate={{opacity: 1}}
-            transition={{duration: 1.5}}
+            className="content"
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <motion.button
-              variants={contentItem}
-              onClick={addNewTransition}
-              disabled={filteredProperties.length === 0}
+            <motion.div
+              className="selectors"
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              transition={{duration: 1.5}}
             >
-              add new transition
-            </motion.button>
+              <AddNewTransitionButton
+                addNewTransition={addNewTransition}
+                disabled={!filteredProperties.length}
+              />
 
-            <PropertySelector
-              properties={filteredProperties}
-              setSelectedProperty={setSelectedProperty}
-              text="Select property"
-              selectedProperty={selectedProperty}
-            />
-            <PropertySelector
-              properties={timingFunctions}
-              setSelectedProperty={setSelectedTimingFunction}
-              text="Select timing function"
-              selectedProperty={selectedTimingFunction}
-            />
+              <PropertySelector
+                properties={filteredProperties}
+                setSelectedProperty={setSelectedProperty}
+                text="Select property"
+                selectedProperty={selectedTransition.property}
+              />
+              <PropertySelector
+                properties={timingFunctions}
+                setSelectedProperty={setSelectedTimingFunction}
+                text="Select timing function"
+                selectedProperty={selectedTransition.timingFunction}
+              />
 
-            <ValueSlider
-              selectedValue={selectedDuration}
-              minValue={100}
-              setValue={setSelectedDuration}
-              text="Select duration"
-            />
-            <ValueSlider
-              selectedValue={selectedDelay}
-              setValue={setSelectedDelay}
-              text="Select delay"
+              {selectedTransition.timingFunction.name === 'custom' && (
+                <BezierEditor
+                  selectedValue={
+                    selectedTransition.timingFunction.value as string
+                  }
+                  setSelectedTimingFunction={setSelectedTimingFunction}
+                />
+              )}
+
+              <ValueSlider
+                selectedValue={selectedTransition.duration}
+                minValue={100}
+                setValue={setSelectedDuration}
+                text="Select duration"
+              />
+              <ValueSlider
+                selectedValue={selectedTransition.delay}
+                setValue={setSelectedDelay}
+                text="Select delay"
+              />
+            </motion.div>
+
+            <TransitionPreview
+              transitionProperties={selectedProperties}
+              transitions={transitions}
             />
           </motion.div>
-
-          <TransitionPreview
-            transitionProperties={selectedProperties}
-            transitions={transitions}
-          />
-        </motion.div>
+        </div>
       </div>
 
       <Footer />

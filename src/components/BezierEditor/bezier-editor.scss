@@ -1,0 +1,34 @@
+@import "../../mixins";
+
+.bezier-editor {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: var(--size-l);
+  margin-top: calc(var(--size-m) * -1);
+
+  .inputs {
+    display: flex;
+    align-items: center;
+  }
+
+  a {
+    font-size: var(--font-size-small);
+    margin-top: var(--size-xs);
+  }
+
+  .input-block {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: var(--font-size-small);
+      margin-bottom: var(--size-xs);
+    }
+
+    input {
+      width: 3.3rem;
+      margin-right: var(--size-xs);
+    }
+  }
+}

@@ -10,12 +10,13 @@ import {
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faCaretDown} from '@fortawesome/free-solid-svg-icons'
 import {useClickOutside} from '../../hooks'
+import {TransitionValue} from '../../types'
 
 type PropertySelectorProps = {
-  properties: string[]
+  properties: TransitionValue[]
   text: string
-  selectedProperty: string
-  setSelectedProperty: (property: string) => void
+  selectedProperty: TransitionValue
+  setSelectedProperty: (property: TransitionValue) => void
 }
 
 const PropertySelector = ({
@@ -31,7 +32,7 @@ const PropertySelector = ({
   useClickOutside({ref: selectorRef, callback: () => setListVisible(false)})
 
   const selectProperty = useCallback(
-    (property: string) => {
+    (property: TransitionValue) => {
       setSelectedProperty(property)
       setListVisible(false)
     },
@@ -59,8 +60,8 @@ const PropertySelector = ({
       onAnimationComplete={onAnimationComplete}
     >
       {properties.map(property => (
-        <li onClick={() => selectProperty(property)} key={property}>
-          {property}
+        <li onClick={() => selectProperty(property)} key={property.name}>
+          {property.name}
         </li>
       ))}
     </motion.ul>
@@ -81,7 +82,7 @@ const PropertySelector = ({
         whileHover={buttonHover}
         variants={selectorVariants}
       >
-        <span>{selectedProperty}</span>
+        <span>{selectedProperty.name}</span>
         <FontAwesomeIcon icon={faCaretDown} size="sm" />
       </motion.button>
 

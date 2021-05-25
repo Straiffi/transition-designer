@@ -15,7 +15,7 @@ export const createTransitionStyleString = (transition: Transition): string => {
   const transitionDelayLabel =
     delay !== 0 ? ` ${formatMilliseconds(delay)}` : ''
 
-  return `${property} ${formatMilliseconds(
-    duration
-  )} ${timingFunction}${transitionDelayLabel}`
+  return `${property.value || property.name} ${formatMilliseconds(duration)} ${
+    timingFunction.value || timingFunction.name
+  }${transitionDelayLabel}`
 }

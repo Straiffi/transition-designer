@@ -1,8 +1,16 @@
+@import "../../mixins";
+
 .transition-preview-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
+    margin-top: var(--size-xl);
+
+    @include for-desktop {
+        margin-top: 3.5rem;
+    }
 }
 
 .transition-preview {
@@ -87,6 +95,12 @@
         }
     }
 
+    &.transform {
+        &:hover {
+            transform: translate3d(0, var(--size-l), 0) scale(1.25) rotate(10deg) !important;
+        }
+    }
+
     &.box-shadow {
         box-shadow: 0 12px 20px 0 var(--color-grey);
 
@@ -112,8 +126,17 @@
 
 .code-preview {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include for-tablet {
+        margin-top: var(--size-2-xl);
+    }
+}
+
+.code-preview-code-block {
+    display: flex;
     align-items: flex-start;
-    margin-top: var(--size-2-xl);
     margin-bottom: var(--size-s);
 
     code {
@@ -134,4 +157,8 @@
         width: var(--size-xl);
         margin-left: var(--size-s);
     }
+}
+
+.copy-notice {
+    height: 0;
 }

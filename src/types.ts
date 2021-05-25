@@ -1,6 +1,12 @@
 export type Transition = {
-  property: string
-  timingFunction: string
+  property: TransitionValue
+  timingFunction: TransitionValue
   duration: number
-  delay?: number
+  delay: number
+  id: string
+}
+
+export type TransitionValue = {
+  name: string
+  value?: string
 }

@@ -50,26 +50,32 @@ const TransitionPreview = ({
       </motion.div>
 
       <motion.div className="code-preview" variants={contentItem}>
-        <code>transition: {transitionStyle};</code>
-        <input
-          value={`transition: ${transitionStyle};`}
-          ref={codePreviewRef}
-          readOnly
-        />
+        <div className="code-preview-code-block">
+          <code>transition: {transitionStyle};</code>
+          <input
+            value={`transition: ${transitionStyle};`}
+            ref={codePreviewRef}
+            readOnly
+          />
 
-        <motion.button
-          className="button"
-          onClick={copyToClipboard}
-          title="copy to clipboard"
-          whileHover={buttonHover}
+          <motion.button
+            className="button"
+            onClick={copyToClipboard}
+            title="copy to clipboard"
+            whileHover={buttonHover}
+          >
+            <FontAwesomeIcon icon={faCopy} size="lg" />
+          </motion.button>
+        </div>
+
+        <FadeInOut
+          visible={copyNoticeVisible}
+          animationKey="copy-notice"
+          className="copy-notice"
         >
-          <FontAwesomeIcon icon={faCopy} size="lg" />
-        </motion.button>
+          <span>code copied to clipboard</span>
+        </FadeInOut>
       </motion.div>
-
-      <FadeInOut visible={copyNoticeVisible} animationKey="copy-notice">
-        <span>code copied to clipboard</span>
-      </FadeInOut>
     </div>
   )
 }

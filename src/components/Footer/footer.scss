@@ -1,9 +1,20 @@
+@import "../../mixins";
+
 .footer {
+  display: flex;
   margin-top: var(--size-xl);
   font-size: var(--font-size-small);
   color: var(--color-grey);
 
   a {
-    color: var(--color-grey);
+    margin-left: var(--size-xs);
+  }
+
+  .divider {
+    margin-left: var(--size-xs);
+  }
+
+  @include for-mobile {
+    display: none;
   }
 }

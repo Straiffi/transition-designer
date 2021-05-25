@@ -48,3 +48,27 @@ export const buttonHover = {
   backgroundColor: 'var(--color-nitor-blue)',
   color: 'var(--color-white)'
 }
+
+export const transitionListHover = {
+  hover: {x: '-3rem'},
+  hidden: {opacity: 0, x: '5rem'},
+  visible: {opacity: 1, x: '5rem'},
+  exit: {opacity: 0}
+}
+
+export const transitionItemsHover = {
+  hidden: {opacity: 0.2},
+  hover: {opacity: 1}
+}
+
+export const addNewTransitionText = {
+  visible: {x: -30},
+  hover: {x: -10},
+  tap: {color: 'var(--color-nitor-blue)'}
+}
+
+export const addNewTransitionIcon = {
+  visible: {opacity: 0, x: -3, rotate: 0, originX: 0.3},
+  hover: {opacity: 1, x: 0, rotate: 90},
+  tap: {color: 'var(--color-nitor-blue)'}
+}
