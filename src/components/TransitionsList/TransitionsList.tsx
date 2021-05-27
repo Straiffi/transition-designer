@@ -2,7 +2,7 @@ import './transitions-list.scss'
 import {Transition} from '../../types'
 import {AnimatePresence, motion} from 'framer-motion'
 import {transitionItemsHover, transitionListHover} from '../../animation'
-import {faTrash} from '@fortawesome/free-solid-svg-icons'
+import {faTrash, faBan} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {useCallback} from 'react'
 
@@ -11,13 +11,15 @@ type TransitionsListProps = {
   selectedTransition: Transition
   setSelectedTransition: (transition: Transition) => void
   deleteTransition: (transition: Transition) => void
+  resetTransition: () => void
 }
 
 const TransitionsList = ({
   transitions,
   selectedTransition,
   setSelectedTransition,
-  deleteTransition
+  deleteTransition,
+  resetTransition
 }: TransitionsListProps): JSX.Element => {
   const onDeleteClick = useCallback(
     (event, transition) => {
@@ -64,7 +66,17 @@ const TransitionsList = ({
           key="transitions-list"
         >
           <span className="transitions-list-header">edit/delete</span>
-          <div className="transition-items">{transitionItems}</div>
+          <div className="transition-items">
+            {transitionItems}
+            <motion.button
+              className="reset-transition-button button"
+              variants={transitionItemsHover}
+              onClick={resetTransition}
+            >
+              reset transition
+              <FontAwesomeIcon icon={faBan} />
+            </motion.button>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

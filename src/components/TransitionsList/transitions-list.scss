@@ -12,6 +12,19 @@
     box-shadow: 2px 2px 5px 0 var(--color-grey);
     height: 32rem;
     width: 15rem;
+
+    .reset-transition-button {
+      margin-top: auto;
+      margin-bottom: var(--size-s);
+      border: none;
+      justify-content: flex-start;
+      align-items: center;
+      color: #f56868;
+
+      svg {
+        margin-left: var(--size-xs);
+      }
+    }
   }
 
   .transition-item {

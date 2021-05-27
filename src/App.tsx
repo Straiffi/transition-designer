@@ -13,6 +13,8 @@ import uniqueId from 'lodash/uniqueId'
 import {useTransitionsList, useUnload} from './hooks'
 import AddNewTransitionButton from './components/AddNewTransitionButton/AddNewTransitionButton'
 import BezierEditor from './components/BezierEditor/BezierEditor'
+import HelpText from './components/HelpText/HelpText'
+import {GA4React} from 'ga-4-react'
 
 const defaultTransition: Transition = {
   property: transitionProperties[0],
@@ -22,7 +24,7 @@ const defaultTransition: Transition = {
   id: uniqueId()
 }
 
-const App = () => {
+const App = ({ga}: {ga?: GA4React}) => {
   const {
     transitions,
     selectedTransition,
@@ -55,8 +57,10 @@ const App = () => {
 
     setTransitions(currentState => [...currentState, newTransition])
     setSelectedTransition(newTransition)
+    ga?.event('user_engagement', 'add new property', 'engagement')
   }, [
     filteredProperties,
+    ga,
     setSelectedProperty,
     setSelectedTransition,
     setTransitions
@@ -71,15 +75,24 @@ const App = () => {
     [setTransitions]
   )
 
+  const resetTransition = useCallback(() => {
+    setTransitions([defaultTransition])
+    setSelectedTransition(defaultTransition)
+  }, [setSelectedTransition, setTransitions])
+
   return (
     <div className="app">
-      <motion.h1
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        transition={{duration: 1}}
-      >
-        Transition Designer
-      </motion.h1>
+      <div className="header-block">
+        <motion.h1
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{duration: 1}}
+        >
+          Transition Designer
+        </motion.h1>
+
+        <HelpText />
+      </div>
 
       <span className="mobile-error-message">
         I'm sorry my dude, but the app really won't work on a screen this small
@@ -91,6 +104,7 @@ const App = () => {
           selectedTransition={selectedTransition}
           setSelectedTransition={setSelectedTransition}
           deleteTransition={deleteTransition}
+          resetTransition={resetTransition}
         />
         <div className="content-container">
           <motion.div
@@ -105,11 +119,6 @@ const App = () => {
               animate={{opacity: 1}}
               transition={{duration: 1.5}}
             >
-              <AddNewTransitionButton
-                addNewTransition={addNewTransition}
-                disabled={!filteredProperties.length}
-              />
-
               <PropertySelector
                 properties={filteredProperties}
                 setSelectedProperty={setSelectedProperty}
@@ -143,11 +152,17 @@ const App = () => {
                 setValue={setSelectedDelay}
                 text="Select delay"
               />
+
+              <AddNewTransitionButton
+                addNewTransition={addNewTransition}
+                disabled={!filteredProperties.length}
+              />
             </motion.div>
 
             <TransitionPreview
               transitionProperties={selectedProperties}
               transitions={transitions}
+              ga={ga}
             />
           </motion.div>
         </div>

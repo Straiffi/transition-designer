@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.168"
+    "@types/lodash": "^4.14.168",
+    "ga-4-react": "^0.1.281"
   }
 }

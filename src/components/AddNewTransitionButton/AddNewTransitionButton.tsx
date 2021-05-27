@@ -28,7 +28,7 @@ const AddNewTransitionButton = ({
       <motion.div variants={addNewTransitionIcon}>
         <FontAwesomeIcon icon={faPlus} />
       </motion.div>
-      add new transition
+      add new property
     </motion.button>
   )
 }

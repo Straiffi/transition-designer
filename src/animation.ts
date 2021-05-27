@@ -62,13 +62,11 @@ export const transitionItemsHover = {
 }
 
 export const addNewTransitionText = {
-  visible: {x: -30},
-  hover: {x: -10},
+  hover: {color: 'var(--color-nitor-blue)'},
   tap: {color: 'var(--color-nitor-blue)'}
 }
 
 export const addNewTransitionIcon = {
-  visible: {opacity: 0, x: -3, rotate: 0, originX: 0.3},
-  hover: {opacity: 1, x: 0, rotate: 90},
-  tap: {color: 'var(--color-nitor-blue)'}
+  hover: {color: 'var(--color-nitor-blue)'},
+  tap: {color: 'var(--color-pink)'}
 }

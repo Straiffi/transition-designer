@@ -7,15 +7,18 @@ import {faCopy} from '@fortawesome/free-solid-svg-icons'
 import FadeInOut from '../Animation/FadeInOut'
 import {Transition} from '../../types'
 import {createTransitionStyleString} from '../../util'
+import {GA4React} from 'ga-4-react'
 
 type TransitionPreviewProps = {
   transitionProperties: string[]
   transitions: Transition[]
+  ga?: GA4React
 }
 
 const TransitionPreview = ({
   transitionProperties,
-  transitions
+  transitions,
+  ga
 }: TransitionPreviewProps): JSX.Element => {
   const codePreviewRef = useRef<HTMLInputElement>(null)
   const [copyNoticeVisible, setCopyNoticeVisible] = useState(false)
@@ -35,7 +38,8 @@ const TransitionPreview = ({
 
     setCopyNoticeVisible(true)
     setTimeout(() => setCopyNoticeVisible(false), 3000)
-  }, [])
+    ga?.event('user_engagement', `copy code ${transitionStyle}`, 'engagement')
+  }, [ga, transitionStyle])
 
   return (
     <div className="transition-preview-container">
