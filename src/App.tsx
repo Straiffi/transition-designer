@@ -36,10 +36,10 @@ const App = ({ga}: {ga?: GA4React}) => {
     setSelectedDelay
   } = useTransitionsList(defaultTransition)
 
-  /*useUnload(e => {
+  useUnload(e => {
     e.preventDefault()
   })
-*/
+
   const selectedProperties = transitions.map(({property}) => property.name)
   const filteredProperties = transitionProperties.filter(
     property => !selectedProperties.includes(property.name)
